@@ -1,0 +1,30 @@
+import java.net.*;
+import java.io.*;
+import java.util.Scanner;
+
+public class Interface {
+    public static void main(String[] args) throws Exception {
+        String host = "localhost";
+        int port = 1234;
+        Socket socket = new Socket(host, port);
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        Scanner scanner = new Scanner(System.in);
+        
+        while(true) {
+            String command = scanner.nextLine();
+            out.write(command);
+            out.newLine();
+            out.flush();
+            if (command.equals("exit")) {
+                break;
+            } else {
+                String line;
+                while(!(line = in.readLine()).equals("done")) {
+                    System.out.println(line);
+                }
+            }
+        }
+        socket.close();
+    }
+}
